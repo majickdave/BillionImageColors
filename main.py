@@ -10,6 +10,7 @@ Must handle large number of input
 
 # COLOR GRABBER - https://gist.github.com/zollinger/1722663 
 def getColors(infile, numcolors=3, resize=150):
+
     image = Image.open(infile)                                              # Using PIL open image
     image = image.resize((resize, resize))                                  # resize image to reduce pixel set
     result = image.convert('P', palette=Image.ADAPTIVE, colors=numcolors)   # Convert to image pallete to get dominant colors
@@ -50,11 +51,12 @@ if __name__ == '__main__':
             # time each url
             time = timeit.default_timer()
             # check if URL in set
-            if url not in URLs:
-                print url
+            hmap = url.partition("""//""")[2]       # reduce url string required to search for in set
+            if hmap not in URLs:
+                print hmap
                 # add unique url to set
-                URLs.add(url)
-                # download image from url
+                URLs.add(hmap)
+                # download image from url and get 3 prevalent colors
                 data = downloadImage(url)
                 # create line writer object for csv file          
                 lineWriter = csv.writer(csvFile)
@@ -70,4 +72,12 @@ if __name__ == '__main__':
         print "Mean Processing Time per image: ", round(np.mean(times), 2), "seconds."
         
          
+
+
+
+
+
+
+
+
 
